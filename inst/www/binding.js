@@ -152,6 +152,7 @@ var dataframe = (function() {
 
 (function() {
   var maps = {};
+  var drawnItems = new L.FeatureGroup();
 
   // We use a Shiny output binding merely to detect when a leaflet map is
   // created and needs to be initialized. We are not expecting any real data
@@ -233,6 +234,22 @@ var dataframe = (function() {
   });
   
   var methods = {};
+  
+
+  methods.addEdit  = function() {    
+
+  // Initialise the FeatureGroup to store editable layers
+    
+    this.addLayer(drawnItems);
+
+    // Initialise the draw control and pass it the FeatureGroup of editable layers
+    var drawControl = new L.Control.Draw({
+      edit: {
+          featureGroup: drawnItems
+      }
+    });
+    this.addControl(drawControl);
+  };
 
   methods.setView = function(lat, lng, zoom, forceReset) {
     this.setView([lat, lng], zoom, forceReset);
