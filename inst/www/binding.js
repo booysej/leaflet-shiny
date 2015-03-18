@@ -227,6 +227,16 @@ var dataframe = (function() {
     if (!map)
       return;
 
+
+
+		var overlays = {
+			"New": drawnItems
+		};
+
+		L.control.layers(overlays).addTo(map);
+
+
+
     map.on('draw:created', function (e) {
       var type = e.layerType,
         layer = e.layer;
