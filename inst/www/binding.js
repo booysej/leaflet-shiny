@@ -1,4 +1,4 @@
-var drawnItems = new L.FeatureGroup();
+drawnItems = new L.FeatureGroup();
 
 function recycle(values, length, inPlace) {
   if (length === 0 && !inPlace)
@@ -227,28 +227,8 @@ var dataframe = (function() {
     if (!map)
       return;
 
-
-
-		var overlays = {
-			"New": drawnItems
-		};
-
-		L.control.layers(overlays).addTo(map);
-
-
-
-    map.on('draw:created', function (e) {
-      var type = e.layerType,
-        layer = e.layer;
-
-      if (type === 'line') {
-         //alert('line');
-          // Do marker specific actions
-      }
-      //alert(type);
-      // Do whatever else you need to. (save to db, add to map etc)
-      map.addLayer(layer);
-    });
+      
+   
 
 
     if (methods[data.method]) {
@@ -263,17 +243,29 @@ var dataframe = (function() {
 
   methods.addEdit  = function() {    
 
-  // Initialise the FeatureGroup to store editable layers
     
-    this.addLayer(drawnItems);
+    var drawControl = new L.Control.Draw({
+          edit: {
+              featureGroup: drawnItems
+          }
+    });
+
+    // Initialise the FeatureGroup to store editable layers    
+    
 
     // Initialise the draw control and pass it the FeatureGroup of editable layers
-    var drawControl = new L.Control.Draw({
-      edit: {
-          featureGroup: drawnItems
-      }
-    });
+
     this.addControl(drawControl);
+        
+     this.on('draw:created', function (e) {
+      var type = e.layerType,
+        layer = e.layer;      
+       drawnItems.addLayer(layer);
+       this.addLayer(layer);
+       this.addLayer(drawnItems);
+       
+    });
+    
   };
 
   methods.setView = function(lat, lng, zoom, forceReset) {
