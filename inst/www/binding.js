@@ -1,3 +1,5 @@
+var drawnItems = new L.FeatureGroup();
+
 function recycle(values, length, inPlace) {
   if (length === 0 && !inPlace)
     return [];
@@ -152,7 +154,6 @@ var dataframe = (function() {
 
 (function() {
   var maps = {};
-  var drawnItems = new L.FeatureGroup();
 
   // We use a Shiny output binding merely to detect when a leaflet map is
   // created and needs to be initialized. We are not expecting any real data
@@ -225,6 +226,20 @@ var dataframe = (function() {
     var map = maps[mapId];
     if (!map)
       return;
+
+    map.on('draw:created', function (e) {
+      var type = e.layerType,
+        layer = e.layer;
+
+      if (type === 'line') {
+         alert('line');
+          // Do marker specific actions
+      }
+
+      // Do whatever else you need to. (save to db, add to map etc)
+      map.addLayer(layer);
+    });
+
 
     if (methods[data.method]) {
       methods[data.method].apply(map, data.args);
