@@ -235,7 +235,7 @@ var dataframe = (function() {
          alert('line');
           // Do marker specific actions
       }
-
+      alert(type);
       // Do whatever else you need to. (save to db, add to map etc)
       map.addLayer(layer);
     });
