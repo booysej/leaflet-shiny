@@ -1,4 +1,5 @@
 drawnItems = new L.FeatureGroup();
+lcontrol = new L.control.layers();
 
 function recycle(values, length, inPlace) {
   if (length === 0 && !inPlace)
@@ -262,9 +263,29 @@ var dataframe = (function() {
         layer = e.layer;      
        drawnItems.addLayer(layer);
        this.addLayer(layer);
-       this.addLayer(drawnItems);
-       
+       this.addLayer(drawnItems);       
     });
+    
+    //var overlayMaps = {
+    //"New Layers": drawnItems
+    //};
+    
+    //L.control.layers(null, overlayMaps).addTo(this);
+    
+    lcontrol.addTo(this);
+    
+    
+    var style = {color:'red', opacity: 1.0, fillOpacity: 1.0, weight: 2, clickable: false};
+    L.Control.FileLayerLoad.LABEL = '<i class="fa fa-folder-open"></i>';
+    L.Control.fileLayerLoad({
+        fitBounds: true,
+        layerOptions: {style: style,
+                       pointToLayer: function (data, latlng) {
+                          return L.circleMarker(latlng, {style: style});
+                       }},
+    }).addTo(this);
+    
+    
     
   };
 
@@ -464,6 +485,9 @@ var dataframe = (function() {
       }
     });
     this.geojson.add(gjlayer, layerId);
+    
+    lcontrol.addOverlay(gjlayer, layerId);    
+    
   };
 
   methods.showPopup = function(lat, lng, content, layerId, options) {

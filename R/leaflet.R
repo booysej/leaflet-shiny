@@ -103,10 +103,15 @@ leafletMap <- function(
       tags$head(
         tags$link(rel="stylesheet", type="text/css", href="leaflet/leaflet.css"),
         tags$link(rel="stylesheet", type="text/css", href="leaflet/leaflet.draw.css"),        
+        tags$link(rel="stylesheet", type="text/css", href="leaflet/font-awesome.min.css"),                
+        
         tags$script(src="leaflet/leaflet.js"),
         tags$script(src="leaflet/leaflet.draw.js"),                
         tags$script(src="leaflet/leaflet.snap.js"),        
         tags$script(src="leaflet/leaflet.geometryutil.js"),                
+        
+        tags$script(src="leaflet/leaflet.filelayer.js"),        
+        tags$script(src="leaflet/togeojson.js"),                
         
         tags$script(src="leaflet/binding.js")
       )
