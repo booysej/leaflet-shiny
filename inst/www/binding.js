@@ -243,21 +243,15 @@ var dataframe = (function() {
   
 
   methods.addEdit  = function() {    
-
     
+
     var drawControl = new L.Control.Draw({
           edit: {
               featureGroup: drawnItems
           }
     });
-
-    // Initialise the FeatureGroup to store editable layers    
-    
-
-    // Initialise the draw control and pass it the FeatureGroup of editable layers
-
     this.addControl(drawControl);
-        
+    
      this.on('draw:created', function (e) {
       var type = e.layerType,
         layer = e.layer;      
@@ -266,6 +260,8 @@ var dataframe = (function() {
        this.addLayer(drawnItems);       
     });
     
+    lcontrol.addOverlay(drawnItems, "New Drawn Items");   
+    
     //var overlayMaps = {
     //"New Layers": drawnItems
     //};
@@ -273,17 +269,27 @@ var dataframe = (function() {
     //L.control.layers(null, overlayMaps).addTo(this);
     
     lcontrol.addTo(this);    
-    lcontrol.addOverlay(drawnItems, "New Drawn Items");   
     
-    var style = {color:'red', opacity: 1.0, fillOpacity: 1.0, weight: 2, clickable: false};
+    
+    var style = {color:'red', opacity: 0.5, fillOpacity: 0.5, weight: 2, clickable: false};
     L.Control.FileLayerLoad.LABEL = '<i class="fa fa-folder-open"></i>';
-    L.Control.fileLayerLoad({
+    var fcontrol = L.Control.fileLayerLoad({
         fitBounds: true,
+        fileSizeLimit: 5000,
         layerOptions: {style: style,
                        pointToLayer: function (data, latlng) {
                           return L.circleMarker(latlng, {style: style});
                        }},
+        formats: [
+            '.geojson',
+            '.kml'
+        ]                                              
     }).addTo(this);
+    
+           
+    fcontrol.loader.on('data:loaded', function (e) {        
+        lcontrol.addOverlay(e.layer, e.filename);
+    });
     
     
     
@@ -487,6 +493,8 @@ var dataframe = (function() {
     this.geojson.add(gjlayer, layerId);
     
     lcontrol.addOverlay(gjlayer, layerId);    
+    //drawnItems.addLayer(gjlayer);
+    //drawnItems.add(gjlayer);
     
   };
 
