@@ -272,8 +272,8 @@ var dataframe = (function() {
     
     //L.control.layers(null, overlayMaps).addTo(this);
     
-    lcontrol.addTo(this);
-    
+    lcontrol.addTo(this);    
+    lcontrol.addOverlay(drawnItems, "New Drawn Items");   
     
     var style = {color:'red', opacity: 1.0, fillOpacity: 1.0, weight: 2, clickable: false};
     L.Control.FileLayerLoad.LABEL = '<i class="fa fa-folder-open"></i>';
