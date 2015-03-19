@@ -1,5 +1,5 @@
 drawnItems = new L.FeatureGroup();
-lcontrol = new L.control.layers();
+lcontrol = new L.control.layers(null,null,{position: 'topleft'});
 
 function recycle(values, length, inPlace) {
   if (length === 0 && !inPlace)
